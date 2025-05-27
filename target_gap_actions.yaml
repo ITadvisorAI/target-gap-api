@@ -1,0 +1,64 @@
+openapi: 3.1.0
+info:
+  title: Target GAP Analysis API
+  version: 1.0.0
+  description: |
+    This API performs a comprehensive GAP analysis between current infrastructure
+    (from HW/SW GAP files) and the target state strategy. It generates two reports
+    detailing gaps, recommendations, device mappings, cost/effort estimates, and
+    transformation strategies.
+
+servers:
+  - url: https://target-gap-api.onrender.com
+
+paths:
+  /start_gap_target:
+    post:
+      summary: Start Target GAP Analysis
+      operationId: startGapTarget
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - session_id
+                - email
+                - files
+              properties:
+                session_id:
+                  type: string
+                  description: Unique session identifier (e.g., Temp_YYYYMMDD_email)
+                email:
+                  type: string
+                  description: User's email address
+                gpt_module:
+                  type: string
+                  description: Always "gap_target"
+                files:
+                  type: array
+                  description: List of files received from GPT4 (Strategy)
+                  items:
+                    type: object
+                    required:
+                      - file_name
+                      - file_url
+                      - file_type
+                    properties:
+                      file_name:
+                        type: string
+                      file_url:
+                        type: string
+                      file_type:
+                        type: string
+                status:
+                  type: string
+                  description: Processing status (e.g., "complete")
+      responses:
+        "200":
+          description: Target GAP analysis started successfully
+        "400":
+          description: Missing required fields
+        "500":
+          description: Internal server error
