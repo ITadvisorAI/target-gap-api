@@ -62,6 +62,7 @@ def download_files(files, folder_path):
         except Exception as e:
             print(f"❌ Download failed for {f['file_name']}: {e}")
     return downloaded
+
 def extract_hw_sw_gaps(files):
     hw, sw = [], []
     for f in files:
@@ -151,6 +152,7 @@ def create_pptx(session_id, folder_path, hw_data, sw_data):
     add_slide("Priority Recommendations", [f"{d['platform']}" for d in hw_data + sw_data if "obsolete" in d["status"].lower()])
     ppt.save(path)
     return path
+
 def process_target_gap(session_id, email, files, folder_path):
     try:
         os.makedirs(folder_path, exist_ok=True)
